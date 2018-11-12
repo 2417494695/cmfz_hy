@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ChaptersDao">
+    
+    <insert id="insertInfo" parameterType="com.baizhi.entity.Chapters">
+        insert into chapters values(#{id},#{title},#{size},#{downUrl},#{duration},#{album_id})
+    </insert>
+    
+    <delete id="deleteById">
+        delete from chapters where id=#{id}
+    </delete>
+    
+    <select id="queryAll" resultType="com.baizhi.entity.Chapters">
+        select id,title,size,downUrl,duration,album_id from chapters
+    </select>
+</mapper>

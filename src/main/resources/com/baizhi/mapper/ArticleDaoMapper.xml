@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.ArticleDao">
+    
+    <resultMap id="articleMap" type="com.baizhi.entity.Article">
+        <id property="id" column="aid"/>
+        <result property="title" column="title"/>
+        <result property="imgPath" column="imgPath"/>
+        <result property="content" column="content"/>
+        <result property="publishTime" column="publishTime"/>
+        <result property="guru_id" column="guru_id"/>
+        <association javaType="com.baizhi.entity.Guru" property="guru">
+            <id property="id" column="gid"/>
+            <result property="name" column="name"/>
+            <result property="headPic" column="headPic"/>
+        </association>
+    </resultMap>
+    <select id="queryPageAll" resultMap="articleMap">
+        select a.id aid,title,a.imgPath,a.content,a.publishTime,a.guru_id,g.id gid,g.name,g.headPic 
+        from article a join guru g
+        on a.guru_id=g.id
+        limit #{start},#{rows}
+    </select>
+    
+    <select id="queryTotalAll" resultType="long">
+        select count(id) from article
+    </select>
+    
+    <delete parameterType="String" id="deleteById">
+        delete from article where id=#{id}
+    </delete>
+    
+    <insert id="insertInfo" parameterType="com.baizhi.entity.Article">
+        insert into article values(#{id},#{title},#{imgPath},#{content},#{publishTime},#{guru_id}) 
+    </insert>
+</mapper>

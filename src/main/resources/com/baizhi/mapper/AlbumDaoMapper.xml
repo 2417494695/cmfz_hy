@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.dao.AlbumDao">
+
+    <resultMap id="albumMap" type="com.baizhi.entity.Album">
+        <id property="id" column="aid"/>
+        <result property="title" column="atitle"/>
+        <result property="coverImg" column="coverImg"/>
+        <result property="count" column="count"/>
+        <result property="score" column="score"/>
+        <result property="author" column="author"/>
+        <result property="broadCast" column="broadCast"/>
+        <result property="brief" column="brief"/>
+        <result property="publishDate" column="publishDate"/>
+        <collection property="children" ofType="com.baizhi.entity.Chapters">
+            <id property="id" column="cid"/>
+            <result property="title" column="ctitle"/>
+            <result property="size" column="size"/>
+            <result property="downUrl" column="downUrl"/>
+            <result property="duration" column="duration"/>
+            <result property="album_id" column="album_id"/>
+        </collection>
+    </resultMap>
+    <select id="queryPageAll" parameterType="int" resultMap="albumMap">
+        select a.id aid,a.title atitle,a.coverImg,a.count,a.score,a.author,a.broadCast,a.brief,a.publishDate,
+               c.id cid,c.title ctitle,c.size,c.downUrl,c.duration,c.album_id
+            from album a
+            left join chapters c
+            on a.id=c.album_id
+            limit #{start},#{rows}
+    </select>
+    
+    <select id="queryAll" resultType="com.baizhi.entity.Album">
+        select * from album
+    </select>
+    
+    <insert id="insertInfo" parameterType="com.baizhi.entity.Album">
+        insert into album values(#{id},#{title},#{coverImg},#{count},#{score},#{author},#{broadCast},#{brief},#{publishDate})
+    </insert>
+    
+    <select id="queryTotalAll" resultType="long">
+        select count(id) from album
+    </select>
+</mapper>
